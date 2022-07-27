@@ -33,7 +33,13 @@ namespace HotelListing.API.Data
                     Id = 3,
                     Name = "Cayman Island",
                     ShortName = "CI"
-                }
+                },
+                 new Country
+                 {
+                     Id = 4,
+                     Name = "Canada",
+                     ShortName = "CA"
+                 }
             );
 
             modelBuilder.Entity<Hotel>().HasData(
