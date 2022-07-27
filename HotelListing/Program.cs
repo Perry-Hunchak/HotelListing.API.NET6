@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 var connectionString = builder.Configuration.GetConnectionString("HotelListingDbConnectionString");
-builder.Services.AddDbContext<HotelListingDBContext>(options => {
+builder.Services.AddDbContext<HotelListingDbContext>(options => {
     options.UseSqlServer(connectionString);
 });
 
@@ -16,7 +16,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddCors(options => { options.AddPolicy("AllowAll", b => b.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod()); 
+builder.Services.AddCors(options => {
+    options.AddPolicy("AllowAll",
+        b => b.AllowAnyHeader()
+            .AllowAnyOrigin()
+            .AllowAnyMethod());
 });
 
 builder.Host.UseSerilog((ctx, lc) => lc.WriteTo.Console().ReadFrom.Configuration(ctx.Configuration));
