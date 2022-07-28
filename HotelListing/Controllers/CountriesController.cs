@@ -24,21 +24,14 @@ namespace HotelListing.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Country>>> GetCountries()
         {
-          if (_context.Countries == null)
-          {
-              return NotFound();
-          }
-            return await _context.Countries.ToListAsync();
+            var countries = await _context.Countries.ToListAsync();
+            return Ok(countries);
         }
 
         // GET: api/Countries/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Country>> GetCountry(int id)
         {
-          if (_context.Countries == null)
-          {
-              return NotFound();
-          }
             var country = await _context.Countries.FindAsync(id);
 
             if (country == null)
@@ -46,7 +39,7 @@ namespace HotelListing.API.Controllers
                 return NotFound();
             }
 
-            return country;
+            return Ok(country);
         }
 
         // PUT: api/Countries/5
@@ -56,7 +49,7 @@ namespace HotelListing.API.Controllers
         {
             if (id != country.Id)
             {
-                return BadRequest();
+                return BadRequest("Invalid Record Id");
             }
 
             _context.Entry(country).State = EntityState.Modified;
@@ -85,10 +78,6 @@ namespace HotelListing.API.Controllers
         [HttpPost]
         public async Task<ActionResult<Country>> PostCountry(Country country)
         {
-          if (_context.Countries == null)
-          {
-              return Problem("Entity set 'HotelListingDbContext.Countries'  is null.");
-          }
             _context.Countries.Add(country);
             await _context.SaveChangesAsync();
 
@@ -99,10 +88,6 @@ namespace HotelListing.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCountry(int id)
         {
-            if (_context.Countries == null)
-            {
-                return NotFound();
-            }
             var country = await _context.Countries.FindAsync(id);
             if (country == null)
             {
@@ -117,7 +102,7 @@ namespace HotelListing.API.Controllers
 
         private bool CountryExists(int id)
         {
-            return (_context.Countries?.Any(e => e.Id == id)).GetValueOrDefault();
+            return _context.Countries.Any(e => e.Id == id);
         }
     }
 }
